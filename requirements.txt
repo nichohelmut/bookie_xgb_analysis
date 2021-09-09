@@ -7,3 +7,4 @@ google-cloud-storage==1.42.0
 sklearn==0.0
 pyarrow>=0.4
 google==3.0.0
+xgboost==1.2.1
