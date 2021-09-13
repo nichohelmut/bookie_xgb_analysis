@@ -17,7 +17,7 @@ def write(df, project_id, output_dataset_id, output_table_name, credentials):
     df.to_gbq(
         "{}.{}".format(output_dataset_id, output_table_name),
         project_id=project_id,
-        if_exists="append",
+        if_exists="replace",
         credentials=credentials,
         progress_bar=None
     )
