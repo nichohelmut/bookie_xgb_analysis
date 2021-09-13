@@ -8,7 +8,7 @@ import xgboost as xgb
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 
-from helpers import read_bigquery, write
+from .helpers import read_bigquery, write
 
 warnings.filterwarnings('ignore')
 
