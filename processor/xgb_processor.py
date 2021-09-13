@@ -26,8 +26,8 @@ class XGBAnalysis:
         self.Z_with_columns.drop(columns_to_drop, axis=1, inplace=True)
 
         self.X = np.array(self.X_with_columns)
-        self.Y = read_bigquery('pp_Y')
-        self.Y = np.array(self.Y.loc[:, self.Y.columns != 'row_added'])
+        self.Y = read_bigquery('pp_Y').sort_values('index1').reset_index(drop=True)
+        self.Y = np.array(self.Y.drop(['row_added', 'index1'], axis=1))
 
         self.Z = np.array(self.Z_with_columns)
         self.df_next_games = read_bigquery('pp_next_games_teams')
@@ -119,7 +119,6 @@ class XGBAnalysis:
 
         df_all = read_bigquery('df_all_sorted')
         df_all = df_all.iloc[::-1].reset_index(drop=True)
-
 
         for index, row in xgb_df_next_games.iterrows():
             odds_home = df_all.loc[index]['odds_ft_home_team_win']
