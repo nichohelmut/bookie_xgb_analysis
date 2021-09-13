@@ -115,8 +115,11 @@ class XGBAnalysis:
 
         self.feature_importance(XGB_model)
         xgb_df_next_games = self.xgb_predict(XGB_model)
-        print(xgb_df_next_games)
+        xgb_df_next_games = xgb_df_next_games.iloc[::-1].reset_index(drop=True)
+
         df_all = read_bigquery('df_all_sorted')
+        df_all = df_all.iloc[::-1].reset_index(drop=True)
+
 
         for index, row in xgb_df_next_games.iterrows():
             odds_home = df_all.loc[index]['odds_ft_home_team_win']
