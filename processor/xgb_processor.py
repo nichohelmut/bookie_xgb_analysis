@@ -7,6 +7,7 @@ import numpy as np
 import xgboost as xgb
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
+from google.cloud import storage
 
 from .helpers import read_bigquery, write
 
@@ -98,6 +99,12 @@ class XGBAnalysis:
     def save_to_db(self, df):
         write(df, self.project_id, 'statistics', 'xgb_next_games_pred', self.credentials)
 
+    def save_to_storage(self, df):
+        client = storage.Client()
+        bucket = client.get_bucket('xgb_next_games_pred')
+
+        bucket.blob('xgb_next_games_pred.csv').upload_from_string(df.to_csv(index=False), 'text/csv')
+
     def xgb_fit_and_predict(self):
         X_train, X_test, y_train, y_test = self.k_fold()
         eval_set = [(X_train, y_train), (X_test, y_test)]
@@ -142,5 +149,6 @@ class XGBAnalysis:
         print(xgb_df_next_games)
         self.under_limits()
         self.save_to_db(xgb_df_next_games)
+        self.save_to_storage(xgb_df_next_games)
         print(xgb_df_next_games)
         return xgb_df_next_games
