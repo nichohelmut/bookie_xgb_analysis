@@ -16,11 +16,12 @@ warnings.filterwarnings('ignore')
 class XGBAnalysis:
     def __init__(self):
 
-        self.X_with_columns = read_bigquery('pp_X')
+        self.X_with_columns = read_bigquery('pp_X').sort_values('index1').reset_index(drop=True)
         self.X_with_columns = self.X_with_columns.loc[:, self.X_with_columns.columns != 'row_added']
-        self.Z_with_columns = read_bigquery('pp_Z')
+        self.Z_with_columns = read_bigquery('pp_Z').sort_values('index1').reset_index(drop=True)
         self.Z_with_columns = self.Z_with_columns.loc[:, self.Z_with_columns.columns != 'row_added']
-        columns_to_drop = []
+
+        columns_to_drop = ['index1']
 
         self.X_with_columns.drop(columns_to_drop, axis=1, inplace=True)
         self.Z_with_columns.drop(columns_to_drop, axis=1, inplace=True)
