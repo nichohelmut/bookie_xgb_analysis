@@ -11,6 +11,9 @@ Bookie football predictions overview:
   <li>https://github.com/nichohelmut/bookie_result_check</li>
 </ol>
 
+This microservice is run a GCP Cloud Engine VM. The VM is triggered every Thursday by a Pub/Sub event and saves the results in Bigquery Table.
+<p>
+</p>
 In this microservice we will then fit and train a XGBoost model with the pre-developed and self-engineered features from the previous <a href="https://github.com/nichohelmut/bookie_clustering_ms">clustering</a> and <a href="https://github.com/nichohelmut/bookie_xgb_preprocess">preprocessing</a>preprocessing services.
 <p>
 </p>
