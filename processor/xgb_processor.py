@@ -1,3 +1,4 @@
+import datetime
 import os
 import time
 import warnings
@@ -5,9 +6,9 @@ import warnings
 import google.auth
 import numpy as np
 import xgboost as xgb
+from google.cloud import storage
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
-from google.cloud import storage
 
 from .helpers import read_bigquery, write
 
@@ -98,12 +99,14 @@ class XGBAnalysis:
 
     def save_to_db(self, df):
         write(df, self.project_id, 'statistics', 'xgb_next_games_pred', self.credentials)
+        write(df, self.project_id, 'statistics', 'xgb_total_pred', self.credentials, "append")
 
     def save_to_storage(self, df):
         client = storage.Client()
         bucket = client.get_bucket('xgb_next_games_pred')
 
-        bucket.blob('xgb_next_games_pred.csv').upload_from_string(df.to_csv(index=False), 'text/csv')
+        bucket.blob(f'xgb_next_games_pred_{datetime.datetime.now().strftime("%Y-%m-%d-%H-%M")}.csv').upload_from_string(
+            df.to_csv(index=False), 'text/csv')
 
     def xgb_fit_and_predict(self):
         X_train, X_test, y_train, y_test = self.k_fold()

@@ -12,12 +12,12 @@ def read_bigquery(table_name):
     return df
 
 
-def write(df, project_id, output_dataset_id, output_table_name, credentials):
+def write(df, project_id, output_dataset_id, output_table_name, credentials, if_exists="replace"):
     print("write to bigquery")
     df.to_gbq(
         "{}.{}".format(output_dataset_id, output_table_name),
         project_id=project_id,
-        if_exists="replace",
+        if_exists=if_exists,
         credentials=credentials,
         progress_bar=None
     )
